@@ -23,3 +23,10 @@
     flex: 1 1 auto;
 }
 
+.error-message-no-content {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+

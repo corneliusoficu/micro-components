@@ -1,9 +1,0 @@
-<div class="plugins-list">
-    <div *ngFor="let x of [].constructor(NR_COLUMNS); let i=index" class="plugin-column-content">
-        <div class="plugin-column-content">
-            <div *ngIf="isPluginLoadedForTile(i)">
-                <ax-lazy-element *axLazyElementDynamic="getPluginName(i), url: getPluginLoadUrl(i);" [outlined]="true"></ax-lazy-element>
-            </div>
-        </div>
-    </div>
-</div>

@@ -37,4 +37,10 @@ export class HomeComponent implements OnInit {
 
   }
 
+  arePluginsLoaded(){
+    let loaded_bundles = JSON.parse(localStorage.getItem("loaded_bundles"));
+    const hasKeys = !!Object.keys(loaded_bundles).length;
+    return hasKeys;
+  }
+
 }

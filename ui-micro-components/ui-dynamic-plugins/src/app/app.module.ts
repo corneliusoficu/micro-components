@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, Injector } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,10 +17,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LazyElementsModule } from '@angular-extensions/elements';
 
-
-
-
-
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
@@ -28,7 +24,7 @@ import { LazyElementsModule } from '@angular-extensions/elements';
     HomeComponent,
     EditComponent,
     LayoutComponent,
-    DialogChangePlugin
+    DialogChangePlugin,
   ],
   imports: [
     BrowserModule,
