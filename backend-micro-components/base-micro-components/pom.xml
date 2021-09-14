@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>nl.vu.dynamicplugins</groupId>
-    <artifactId>products-list</artifactId>
-    <version>1.0.1</version>
+    <artifactId>base-micro-components</artifactId>
+    <version>1.0</version>
     <packaging>bundle</packaging>
-    <name>List of Products Bundle</name>
-    <description>Displays a list of products that are retrieved from a backend</description>
+    <name>nl.vu.dynamicplugins.base-micro-components</name>
+    <description>Offers base functionalities to simplify the development of micro-components</description>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -27,11 +27,6 @@
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.service.component.annotations</artifactId>
             <version>1.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>nl.vu.dynamicplugins</groupId>
-            <artifactId>base-micro-components</artifactId>
-            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -79,20 +74,16 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Bundle-Activator>nl.vu.dynamicplugins.productslist.Activator</Bundle-Activator>
+                        <Bundle-Activator>nl.vu.dynamicplugins.base.Activator</Bundle-Activator>
                         <!-- <_include>META-INF/MANIFEST.MF</_include> -->
-                        <Import-Package>
-                            org.osgi.framework.*,
-                            org.slf4j.*,
-                            org.apache.cxf.dosgi.common.api,
-                            com.fasterxml.jackson.jaxrs.json,
-                            org.apache.cxf.jaxrs.client,
-                            javax.ws.rs,
-                            javax.ws.rs.core,
-                            nl.vu.dynamicplugins.base.*
-                        </Import-Package>
-                        <Export-Package>nl.vu.dynamicplugins.productslist.services</Export-Package>
+                        <Export-Package>nl.vu.dynamicplugins.base*</Export-Package>
                     </instructions>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                    </archive>
                 </configuration>
             </plugin>
             <plugin>
@@ -105,6 +96,4 @@
             </plugin>
         </plugins>
     </build>
-
-
 </project>

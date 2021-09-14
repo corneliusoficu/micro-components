@@ -1,0 +1,1 @@
+console.log("Loaded view.js from base bundle")
