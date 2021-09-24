@@ -1,0 +1,32 @@
+#!/usr/bin/env python
+
+import click
+from backend_generator import BackendGenerator
+
+@click.group()
+def main():
+    pass
+
+
+@main.group()
+def generate():
+    pass
+
+
+@generate.command("backend")
+@click.argument("name")
+@click.argument("--description", default="Micro-Component generated using mc-cli")
+def generate_backend(name, __description):
+    print(f"Generating a backend component with the name: {name}")
+    generator = BackendGenerator(name, __description)
+    generator.generate()
+
+
+cli = click.CommandCollection(sources=[main])
+
+
+if __name__ == '__main__':
+    cli()
+
+
+
