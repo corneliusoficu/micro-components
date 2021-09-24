@@ -1,4 +1,4 @@
-package {{group_id}}.{{main_package_name}};
+package nl.vu.dynamicplugins.uiauthentication;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -10,11 +10,11 @@ public class Activator implements BundleActivator {
     private final static Logger LOGGER = LoggerFactory.getLogger(Activator.class);
 
     public void start(BundleContext arg0) throws Exception {
-        LOGGER.info("Starting {{endpoint_name}} Micro-Component...");
+        LOGGER.info("Starting ui-authentication Micro-Component...");
     }
 
     public void stop(BundleContext arg0) throws Exception {
-        LOGGER.info("Stopping {{endpoint_name}} Micro-Component...");
+        LOGGER.info("Stopping ui-authentication Micro-Component...");
     }
 
 }

@@ -7,11 +7,12 @@ import sys
 class BackendGenerator:
     GROUP_ID = "nl.vu.dynamicplugins"
 
-    def __init__(self, name, description):
+    def __init__(self, name, description, group):
         self._name = name
         self._description = description
-        self._current_directory = pathlib.Path(__file__).parent.resolve()
-        self._location_of_component_directory = f"{self._current_directory}/{self._name}"
+        self._current_work_directory = os.getcwd()
+        self._scripts_path = pathlib.Path(__file__).parent.resolve()
+        self._location_of_component_directory = f"{self._current_work_directory}/{self._name}"
         self._artifact_id = self._name.lower()
         self._bundle_name = f"{BackendGenerator.GROUP_ID}.{self._artifact_id}"
         self._description = self._description
@@ -32,7 +33,7 @@ class BackendGenerator:
 
     def _generate_pom_xml_file(self):
 
-        with open('templates/pom.xml.jinja') as file_:
+        with open(f'{self._scripts_path}/templates/pom.xml.jinja') as file_:
             pom_xml_template = Template(file_.read())
 
             activator_location = f"{BackendGenerator.GROUP_ID}.{self._main_package_name}.Activator"
@@ -76,9 +77,11 @@ class BackendGenerator:
         endpoint_name = "-".join(c.lower() for c in self._name.split("-"))
 
         # Generating the main Service Java Class
-        with open('templates/Service.java.jinja') as file_:
+        with open(f'{self._scripts_path}/templates/Service.java.jinja') as file_:
             service_java = Template(file_.read())
             generated_service_java = service_java.render(
+                group_id=BackendGenerator.GROUP_ID,
+                main_package_name=self._main_package_name,
                 class_name=class_name,
                 endpoint_name=endpoint_name
             )
@@ -89,17 +92,21 @@ class BackendGenerator:
         print(f"Generated {class_name}.java file")
 
         # Generating the Activator Java Class
-        with open('templates/Activator.java.jinja') as file_:
+        with open(f'{self._scripts_path}/templates/Activator.java.jinja') as file_:
             activator_java = Template(file_.read())
             generated_activator_java = activator_java.render(
+                group_id=BackendGenerator.GROUP_ID,
+                main_package_name=self._main_package_name,
                 endpoint_name=endpoint_name
             )
 
         with open(f"{entire_project_structure}/Activator.java", "w") as f:
             f.write(generated_activator_java)
 
+        print("Generated Activator Java Class")
+
         # Generating the default view.js script file
-        with open('templates/view.js.jinja') as file_:
+        with open(f'{self._scripts_path}/templates/view.js.jinja') as file_:
             view_js = Template(file_.read())
             generated_view_js = view_js.render(
                 endpoint_name=endpoint_name
@@ -107,6 +114,8 @@ class BackendGenerator:
 
         with open(f"{entire_resources_structure}/view.js", "w") as f:
             f.write(generated_view_js)
+
+        print("Generated view.js script")
 
 
 
