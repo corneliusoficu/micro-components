@@ -1,7 +1,11 @@
 #!/Users/corneliudumitru.sofi/Master_VU_UvA/Master_Thesis/dynamic-plugins/mc-cli/venv/bin/python3
+import pathlib
 
 import click
 from backend_generator import BackendGenerator
+from deployer import Deployer
+from karaf_instance import KarafInstance
+
 
 @click.group()
 def main():
@@ -21,6 +25,53 @@ def generate_backend(name, __description, __group):
     print(f"Generating a backend component with the name: {name}")
     generator = BackendGenerator(name, __description, __group)
     generator.generate()
+
+
+@main.group()
+def deploy():
+    pass
+
+
+@deploy.command("jar")
+def deploy_local_jar():
+    Deployer().deploy_jar()
+
+
+@main.group()
+def karaf():
+    pass
+
+
+@karaf.command("start")
+def start_karaf():
+    KarafInstance().start()
+
+
+@karaf.command("stop")
+def stop_karaf():
+    KarafInstance().stop()
+
+
+@karaf.command("list")
+def list_karaf_bundles():
+    KarafInstance().list_bundles()
+
+
+@karaf.command("logs")
+def tail_karaf_logs():
+    KarafInstance().tail_logs()
+
+
+@karaf.command("install")
+@click.argument("--location")
+def install_karaf_bundle(__location):
+    KarafInstance().install_bundle_jar(__location)
+
+
+@karaf.command("start-bundle")
+@click.argument("name")
+def start_bundle(name):
+    KarafInstance().start_bundle_by_name(name)
 
 
 cli = click.CommandCollection(sources=[main])
