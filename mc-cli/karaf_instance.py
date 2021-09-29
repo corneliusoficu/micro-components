@@ -4,8 +4,6 @@ import subprocess
 import sys
 
 
-
-
 class KarafInstance:
     KARAF_BIN_LOCATION = '/Users/corneliudumitru.sofi/Downloads/apache-karaf-4.3.2/bin'
     KARAF_USER_PRIVATE_KEY_LOCATION = f"{pathlib.Path(__file__).parent.resolve()}/karaf.id_rsa"
@@ -45,6 +43,12 @@ class KarafInstance:
         if len(result_lines) != 2:
             return False
 
-        running_bundle = result_lines[1].split('\t')[4]
-        return running_bundle == name
+        running_bundle_info = result_lines[1].split('\t')
+        running_bundle_status = running_bundle_info[1]
+        running_bundle_name = running_bundle_info[4]
+
+        if running_bundle_name != name:
+            return False
+
+        return running_bundle_status == 'Active'
 

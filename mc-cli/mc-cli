@@ -2,7 +2,7 @@
 import pathlib
 
 import click
-from backend_generator import BackendGenerator
+from micro_component_generator import MicroComponentGenerator
 from deployer import Deployer
 from karaf_instance import KarafInstance
 
@@ -17,13 +17,13 @@ def generate():
     pass
 
 
-@generate.command("backend")
+@generate.command("micro-component")
 @click.argument("name")
 @click.argument("--description", default="Micro-Component generated using mc-cli")
 @click.argument("--group", default="nl.vu.dynamicplugins")
-def generate_backend(name, __description, __group):
-    print(f"Generating a backend component with the name: {name}")
-    generator = BackendGenerator(name, __description, __group)
+def generate_micro_component(name, __description, __group):
+    print(f"Generating a micro-component with the name: {name}")
+    generator = MicroComponentGenerator(name, __description, __group)
     generator.generate()
 
 
