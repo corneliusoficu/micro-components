@@ -1,8 +1,7 @@
 #!/Users/corneliudumitru.sofi/Master_VU_UvA/Master_Thesis/dynamic-plugins/mc-cli/venv/bin/python3
-import pathlib
 
 import click
-from micro_component_generator import MicroComponentGenerator
+from generators.micro_component_generator import MicroComponentGenerator
 from deployer import Deployer
 from karaf_instance import KarafInstance
 
@@ -19,12 +18,12 @@ def generate():
 
 @generate.command("micro-component")
 @click.argument("name")
-@click.argument("--description", default="Micro-Component generated using mc-cli")
-@click.argument("--group", default="nl.vu.dynamicplugins")
-def generate_micro_component(name, __description, __group):
+@click.option("--description", "description", default="Micro-Component generated using mc-cli")
+@click.option("--group", "group", default="nl.vu.dynamicplugins")
+@click.option("--ui", "ui", type=click.Choice(['angular', 'react', 'vanilla']), default="angular")
+def generate_micro_component(name, description, group, ui):
     print(f"Generating a micro-component with the name: {name}")
-    generator = MicroComponentGenerator(name, __description, __group)
-    generator.generate()
+    MicroComponentGenerator(name, description, group_id=group, ui=ui).generate()
 
 
 @main.group()

@@ -1,17 +1,15 @@
-import os
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
 
+from constants import CURRENT_WORKING_DIR
 from karaf_instance import KarafInstance
 
+
 class Deployer:
-
-    CURRENT_WORKING_DIR = os.getcwd()
-
     def deploy_jar(self):
-        target_dir = Deployer.CURRENT_WORKING_DIR + "/target"
-        pom_xml_location = Deployer.CURRENT_WORKING_DIR + "/pom.xml"
+        target_dir = CURRENT_WORKING_DIR + "/target"
+        pom_xml_location = CURRENT_WORKING_DIR + "/pom.xml"
 
         print("Building Micro-Component JAR")
 
