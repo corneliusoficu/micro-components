@@ -1,6 +1,7 @@
 import os
 import sys
 
+from generators.angular_generator import AngularGenerator
 from generators.backend_generator import BackendGenerator
 from constants import MC_PREFIX
 
@@ -12,12 +13,14 @@ class MicroComponentGenerator:
         self._group_id = group_id
         self._ui = ui
         self._backend_generator = BackendGenerator(self._name, description, group_id)
+        self._frontend_generator = MicroComponentGenerator.frontend_generator_by_ui_type(ui, self._name)
         self._current_work_directory = os.getcwd()
         self._mc_directory = f"{self._current_work_directory}/{MC_PREFIX}{self._name}"
 
     def generate(self):
         self._create_folder_for_component()
         self._backend_generator.generate(self._mc_directory)
+        self._frontend_generator.generate(self._mc_directory)
 
     def _create_folder_for_component(self):
         if os.path.exists(self._mc_directory):
@@ -26,6 +29,11 @@ class MicroComponentGenerator:
 
         print(f"Creating component directory: {self._mc_directory}")
         os.mkdir(self._mc_directory)
+
+    @staticmethod
+    def frontend_generator_by_ui_type(ui_type, name):
+        if ui_type == "angular":
+            return AngularGenerator(name)
 
 
 
