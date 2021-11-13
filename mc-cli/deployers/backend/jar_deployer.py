@@ -2,14 +2,14 @@ import subprocess
 import sys
 import xml.etree.ElementTree as ET
 
-from constants import CURRENT_WORKING_DIR
+from deployers.deployer import Deployer
 from karaf_instance import KarafInstance
 
 
-class Deployer:
-    def deploy_jar(self):
-        target_dir = CURRENT_WORKING_DIR + "/target"
-        pom_xml_location = CURRENT_WORKING_DIR + "/pom.xml"
+class JarDeployer(Deployer):
+    def deploy(self, location):
+        target_dir = location + "/target"
+        pom_xml_location = location + "/pom.xml"
 
         print("Building Micro-Component JAR")
 
@@ -49,5 +49,3 @@ class Deployer:
             uri = None
             tag = elem.tag
         return uri, tag
-
-

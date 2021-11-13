@@ -1,8 +1,11 @@
 #!/Users/corneliudumitru.sofi/Master_VU_UvA/Master_Thesis/dynamic-plugins/mc-cli/venv/bin/python3
+import os
 
 import click
+
+import constants
+from deployers.backend.jar_deployer import JarDeployer
 from generators.micro_component_generator import MicroComponentGenerator
-from deployer import Deployer
 from karaf_instance import KarafInstance
 
 
@@ -23,7 +26,9 @@ def generate():
 @click.option("--ui", "ui", type=click.Choice(['angular', 'react', 'vanilla']), default="angular")
 def generate_micro_component(name, description, group, ui):
     print(f"Generating a micro-component with the name: {name}")
-    MicroComponentGenerator(name, description, group_id=group, ui=ui).generate()
+    name = MicroComponentGenerator.format_project_name(name)
+    mc_directory = f"{os.getcwd()}/{constants.MC_PREFIX}{name}"
+    MicroComponentGenerator(name, description, group_id=group, ui=ui).generate(mc_directory)
 
 
 @main.group()
@@ -33,7 +38,7 @@ def deploy():
 
 @deploy.command("jar")
 def deploy_local_jar():
-    Deployer().deploy_jar()
+    JarDeployer().deploy(os.getcwd())
 
 
 @main.group()

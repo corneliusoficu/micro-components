@@ -3,8 +3,8 @@ import sys
 
 from constants import MC_BACKEND_SUFFIX
 from constants import MC_CLI_HOME_PATH
-from generators.helpers import file_helpers
-from generators.models.generator import Generator
+from helpers import file_helpers
+from generators.generator import Generator
 
 
 class JavaJaxRSGenerator(Generator):

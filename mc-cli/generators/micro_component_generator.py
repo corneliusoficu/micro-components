@@ -3,34 +3,32 @@ import sys
 
 from generators.backend.java_jax_rs_generator import JavaJaxRSGenerator
 from generators.frontend.angular_generator import AngularGenerator
-from constants import MC_PREFIX
+from generators.generator import Generator
 
 
-class MicroComponentGenerator:
+class MicroComponentGenerator(Generator):
     def __init__(self, name, description, group_id="nl.vu.dynamicplugins", ui="angular"):
-        self._name = MicroComponentGenerator.format_project_name(name)
+        self._name = name
         self._description = description
         self._group_id = group_id
         self._ui = ui
+
         # TODO: Replace hardcoded backend type
-        self._backend_generator = MicroComponentGenerator.backend_generator_by_type(name, description,
-                                                                                    group_id, "JAX-RS")
+        self._backend_generator = MicroComponentGenerator.backend_generator_by_type(name, description,group_id, "JAX-RS")
         self._frontend_generator = MicroComponentGenerator.frontend_generator_by_ui_type(ui, self._name)
-        self._current_work_directory = os.getcwd()
-        self._mc_directory = f"{self._current_work_directory}/{MC_PREFIX}{self._name}"
 
-    def generate(self):
-        self._create_folder_for_component()
-        self._backend_generator.generate(self._mc_directory)
-        self._frontend_generator.generate(self._mc_directory)
+    def generate(self, mc_directory):
+        self._create_folder_for_component(mc_directory)
+        self._backend_generator.generate(mc_directory)
+        self._frontend_generator.generate(mc_directory)
 
-    def _create_folder_for_component(self):
-        if os.path.exists(self._mc_directory):
-            print(f"Directory for component already exists: {self._mc_directory}\nAborting!")
+    def _create_folder_for_component(self, mc_directory):
+        if os.path.exists(mc_directory):
+            print(f"Directory for component already exists: {mc_directory}\nAborting!")
             sys.exit(-1)
 
-        print(f"Creating component directory: {self._mc_directory}")
-        os.mkdir(self._mc_directory)
+        print(f"Creating component directory: {mc_directory}")
+        os.mkdir(mc_directory)
 
     @staticmethod
     def format_project_name(name):
