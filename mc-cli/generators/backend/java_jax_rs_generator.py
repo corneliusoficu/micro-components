@@ -3,12 +3,11 @@ import sys
 
 from constants import MC_BACKEND_SUFFIX
 from constants import MC_CLI_HOME_PATH
+from generators.generator import ViewProvidingGenerator
 from helpers import file_helpers
-from generators.generator import Generator
 
 
-class JavaJaxRSGenerator(Generator):
-
+class JavaJaxRSGenerator(ViewProvidingGenerator):
     def __init__(self, name, description, group_id):
         self._name = self._artifact_id = f"{name.lower()}{MC_BACKEND_SUFFIX}"
         self._description = description
@@ -22,6 +21,13 @@ class JavaJaxRSGenerator(Generator):
         backend_path = self._generate_folder_for_backend(mc_path)
         self._generate_pom_xml_file(backend_path)
         self._generate_file_structure_for_java_project(backend_path)
+
+    def get_view_location(self):
+        if self._view_js_location is None:
+            print("Java JaxRS view.js file was not generated")
+            sys.exit(-1)
+
+        return self._view_js_location
 
     def _generate_folder_for_backend(self, mc_path):
         backend_folder_path = f"{mc_path}/{self._name}"
@@ -100,7 +106,7 @@ class JavaJaxRSGenerator(Generator):
         # Generating the default view.js script file
 
         view_js_template = f'{MC_CLI_HOME_PATH}/templates/java_jax_rs/view.js.jinja'
-        view_js_location = f'{path_to_resources_folder}/view.js'
+        self._view_js_location = f'{path_to_resources_folder}/view.js'
 
-        file_helpers.create_template_file(view_js_template, view_js_location,
+        file_helpers.create_template_file(view_js_template, self._view_js_location,
                                           endpoint_name=endpoint_name)

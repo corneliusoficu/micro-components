@@ -4,6 +4,7 @@ import sys
 from generators.backend.java_jax_rs_generator import JavaJaxRSGenerator
 from generators.frontend.angular_generator import AngularGenerator
 from generators.generator import Generator
+from helpers.file_helpers import copy_to_location
 
 
 class MicroComponentGenerator(Generator):
@@ -21,6 +22,12 @@ class MicroComponentGenerator(Generator):
         self._create_folder_for_component(mc_directory)
         self._backend_generator.generate(mc_directory)
         self._frontend_generator.generate(mc_directory)
+
+        print("Updating the view.js file")
+        view_js_location = self._backend_generator.get_view_location()
+        exported_frontend_location = self._frontend_generator.get_view_location()
+
+        copy_to_location(view_js_location, exported_frontend_location)
 
     def _create_folder_for_component(self, mc_directory):
         if os.path.exists(mc_directory):

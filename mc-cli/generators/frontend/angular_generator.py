@@ -6,10 +6,10 @@ import constants
 from constants import MC_CLI_HOME_PATH
 from deployers.frontend.angular_deployer import AngularDeployer
 from helpers import file_helpers
-from generators.generator import Generator
+from generators.generator import ViewProvidingGenerator
 
 
-class AngularGenerator(Generator):
+class AngularGenerator(ViewProvidingGenerator):
     def __init__(self, name):
         self._name = name
         self._deployer = AngularDeployer()
@@ -22,14 +22,21 @@ class AngularGenerator(Generator):
             sys.exit(-1)
 
         angular_project_name = f"{self._name}-frontend"
-        angular_project_location = os.path.join(mc_directory, angular_project_name)
+        self._angular_project_location = os.path.join(mc_directory, angular_project_name)
 
         self._generate_new_angular_project(mc_directory, angular_project_name)
-        self._install_angular_elements_npm_package(angular_project_location)
-        self._create_main_component(angular_project_location, angular_project_name)
-        self._create_app_module(angular_project_location, angular_project_name)
-        self._update_package_json_file(angular_project_location, angular_project_name)
-        self._deployer.deploy(angular_project_location)
+        self._install_angular_elements_npm_package(self._angular_project_location)
+        self._create_main_component(self._angular_project_location, angular_project_name)
+        self._create_app_module(self._angular_project_location, angular_project_name)
+        self._update_package_json_file(self._angular_project_location, angular_project_name)
+        self._deployer.deploy(self._angular_project_location)
+
+    def get_view_location(self):
+        if self._angular_project_location is None:
+            print("The view was not generated yet!")
+            sys.exit(-1)
+
+        return f"{self._angular_project_location}/{self.export_file}"
 
     def _check_angular_cli_present(self):
         print("Checking if Angular CLI is present")
