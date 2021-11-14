@@ -1,0 +1,32 @@
+/* You can add global styles to this file, and also import other style files */
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    font: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.app-contents {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+.plugins-list {
+    display: flex;
+    height: 100%;
+}
+
+.plugin-column-content {
+    display: flex;
+    flex: 1 1 auto;
+    margin: 5px;
+}
+
+mat-toolbar {
+    flex: 0 1 auto;
+}

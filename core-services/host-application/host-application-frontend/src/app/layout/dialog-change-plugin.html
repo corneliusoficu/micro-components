@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Choose plugin to be loaded</h2>
+<mat-dialog-content class="mat-typography">
+    <div class="loading-container" *ngIf="loading">
+      <mat-spinner></mat-spinner>
+      <h1 style="margin-top:30px;">{{loadingMessage}}</h1>
+    </div>
+    <mat-selection-list #selectionOfPlugins [multiple]="false" [(ngModel)]="selectedBundle">
+        <div *ngIf="!loading">
+          <mat-list-option *ngFor="let pluginInfo of pluginInfoList" [value]="pluginInfo">
+            {{pluginInfo.name}}-{{pluginInfo.version}}.{{pluginInfo.extension}}
+          </mat-list-option>
+        </div>
+      </mat-selection-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button (click)="onPluginInstallClicked()" [disabled]="selectionOfPlugins.selectedOptions.selected[0]==undefined" mat-button>Install</button>
+</mat-dialog-actions>

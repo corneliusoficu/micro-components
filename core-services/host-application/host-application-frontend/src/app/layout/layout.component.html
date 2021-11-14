@@ -1,0 +1,11 @@
+<div class="plugins-list">
+    <div *ngFor="let x of [].constructor(NR_COLUMNS); let i=index" class="plugin-column-content">
+        <div class="plugin-edit-content">
+            <h3>Loaded plugin: <b>{{getLoadedPluginForIndex(i)}}</b></h3>
+            <div class="plugin-edit-actions">
+                <button [disabled]="doesTileContainPlugin(i)" class="change-ui-plugin-button" (click)="onInstallPluginButtonPressed(i)" mat-raised-button color="primary">Install Plugin</button>
+                <button [disabled]="!doesTileContainPlugin(i)"class="change-ui-plugin-button" (click)="onUninstallPluginButtonPressed(i)" mat-raised-button color="primary">Uninstall Plugin</button>
+            </div>
+        </div>
+    </div>
+</div>

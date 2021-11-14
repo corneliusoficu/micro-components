@@ -1,0 +1,12 @@
+<div class="settings-container">
+    <h2>Settings controlling the host application</h2>
+    <mat-form-field appearance="fill">
+        <mat-label>Number of columns</mat-label>
+        <mat-select [(ngModel)]="nrColumnsSelectedOption">
+          <mat-option *ngFor="let nr of numberOfColumns" [value]="nr" [selected]="nr === 3">
+            {{nr}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>      
+    <button mat-raised-button color="primary">Apply</button>
+</div>

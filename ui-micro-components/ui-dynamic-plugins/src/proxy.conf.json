@@ -1,7 +1,0 @@
-{
-    "/cxf/*": {
-        "target": "http://localhost:9991",
-        "secure": false,
-        "logLevel": "debug"
-    }
-}

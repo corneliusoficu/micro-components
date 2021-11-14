@@ -1,0 +1,6 @@
+.settings-container {
+    width: 30%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}

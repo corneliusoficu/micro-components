@@ -1,1 +1,0 @@
-console.log("Successfully started the ui-authentication Micro-Component")
