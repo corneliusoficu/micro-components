@@ -78,6 +78,18 @@ def start_bundle(name):
     KarafInstance().start_bundle_by_name(name)
 
 
+@karaf.command("stop-bundle")
+@click.argument("name")
+def start_bundle(name):
+    KarafInstance().stop_bundle_by_name(name)
+
+
+@karaf.command("uninstall-bundle")
+@click.argument("name")
+def start_bundle(name):
+    KarafInstance().uninstall_bundle_by_name(name)
+
+
 cli = click.CommandCollection(sources=[main])
 
 

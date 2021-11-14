@@ -30,11 +30,22 @@ class KarafInstance:
         os.system(f"{KARAF_BIN_LOCATION}/client -k {KARAF_USER_PRIVATE_KEY_LOCATION} install file:{jar_location}")
 
     def start_bundle_by_name(self, name):
+        print(f"Starting bundle with name {name}")
         if self._bundle_already_runs(name):
             print(f"The bundle {name} is already installed!")
             return False
         os.system(f"{KARAF_BIN_LOCATION}/client -k {KARAF_USER_PRIVATE_KEY_LOCATION} start {name}")
         return True
+
+    def stop_bundle_by_name(self, name):
+        print(f"Stopping bundle with name {name}")
+        subprocess.run([f"{KARAF_BIN_LOCATION}/client", '-k',
+                        KARAF_USER_PRIVATE_KEY_LOCATION, 'stop', name])
+
+    def uninstall_bundle_by_name(self, name):
+        print(f"Uninstalling bundle with name {name}")
+        subprocess.run([f"{KARAF_BIN_LOCATION}/client", '-k',
+                        KARAF_USER_PRIVATE_KEY_LOCATION, 'uninstall', name])
 
     def _bundle_already_runs(self, name):
         result = subprocess.run([f"{KARAF_BIN_LOCATION}/client", '-k',
@@ -53,4 +64,3 @@ class KarafInstance:
             return False
 
         return running_bundle_status == 'Active'
-
