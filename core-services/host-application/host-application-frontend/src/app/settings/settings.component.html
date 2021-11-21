@@ -7,6 +7,13 @@
             {{nr}}
           </mat-option>
         </mat-select>
-      </mat-form-field>      
-    <button mat-raised-button color="primary">Apply</button>
+      </mat-form-field><mat-form-field appearance="fill">
+        <mat-label>Number of rows</mat-label>
+        <mat-select [(ngModel)]="nrRowsSelectedOption">
+          <mat-option *ngFor="let nr of numberOfRows" [value]="nr" [selected]="nr === 3">
+            {{nr}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>           
+      <button mat-raised-button color="primary">Apply</button>
 </div>

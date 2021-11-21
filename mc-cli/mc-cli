@@ -1,12 +1,9 @@
 #!/Users/corneliudumitru.sofi/Master_VU_UvA/Master_Thesis/dynamic-plugins/mc-cli/venv/bin/python3
-import os
 
 import click
-
-import constants
-from deployers.backend.jar_deployer import JarDeployer
-from generators.micro_component_generator import MicroComponentGenerator
-from karaf_instance import KarafInstance
+import commands.deploy_commands as deploy_group
+import commands.generate_commands as generate_group
+import commands.karaf_commands as karaf_group
 
 
 @click.group()
@@ -14,81 +11,9 @@ def main():
     pass
 
 
-@main.group()
-def generate():
-    pass
-
-
-@generate.command("micro-component")
-@click.argument("name")
-@click.option("--description", "description", default="Micro-Component generated using mc-cli")
-@click.option("--group", "group", default="nl.vu.dynamicplugins")
-@click.option("--ui", "ui", type=click.Choice(['angular', 'react', 'vanilla']), default="angular")
-def generate_micro_component(name, description, group, ui):
-    print(f"Generating a micro-component with the name: {name}")
-    name = MicroComponentGenerator.format_project_name(name)
-    mc_directory = f"{os.getcwd()}/{constants.MC_PREFIX}{name}"
-    MicroComponentGenerator(name, description, group_id=group, ui=ui).generate(mc_directory)
-
-
-@main.group()
-def deploy():
-    pass
-
-
-@deploy.command("jar")
-def deploy_local_jar():
-    JarDeployer().deploy(os.getcwd())
-
-
-@main.group()
-def karaf():
-    pass
-
-
-@karaf.command("start")
-def start_karaf():
-    KarafInstance().start()
-
-
-@karaf.command("stop")
-def stop_karaf():
-    KarafInstance().stop()
-
-
-@karaf.command("list")
-def list_karaf_bundles():
-    KarafInstance().list_bundles()
-
-
-@karaf.command("logs")
-def tail_karaf_logs():
-    KarafInstance().tail_logs()
-
-
-@karaf.command("install")
-@click.argument("--location")
-def install_karaf_bundle(__location):
-    KarafInstance().install_bundle_jar(__location)
-
-
-@karaf.command("start-bundle")
-@click.argument("name")
-def start_bundle(name):
-    KarafInstance().start_bundle_by_name(name)
-
-
-@karaf.command("stop-bundle")
-@click.argument("name")
-def start_bundle(name):
-    KarafInstance().stop_bundle_by_name(name)
-
-
-@karaf.command("uninstall-bundle")
-@click.argument("name")
-def start_bundle(name):
-    KarafInstance().uninstall_bundle_by_name(name)
-
+main.add_command(deploy_group.deploy)
+main.add_command(generate_group.generate)
+main.add_command(karaf_group.karaf)
 
 cli = click.CommandCollection(sources=[main])
 

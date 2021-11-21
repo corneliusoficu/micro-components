@@ -5,6 +5,7 @@ from generators.backend.java_jax_rs_generator import JavaJaxRSGenerator
 from generators.frontend.angular_generator import AngularGenerator
 from generators.generator import Generator
 from helpers.file_helpers import copy_to_location
+from constants import MC_BACKEND_SUFFIX
 
 
 class MicroComponentGenerator(Generator):
@@ -15,7 +16,8 @@ class MicroComponentGenerator(Generator):
         self._ui = ui
 
         # TODO: Replace hardcoded backend type
-        self._backend_generator = MicroComponentGenerator.backend_generator_by_type(name, description,group_id, "JAX-RS")
+        backend_name = f"{name.lower()}{MC_BACKEND_SUFFIX}"
+        self._backend_generator = MicroComponentGenerator.backend_generator_by_type(backend_name, description,group_id, "JAX-RS")
         self._frontend_generator = MicroComponentGenerator.frontend_generator_by_ui_type(ui, self._name)
 
     def generate(self, mc_directory):

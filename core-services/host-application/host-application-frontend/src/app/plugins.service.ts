@@ -15,7 +15,7 @@ export interface PluginInfo {
 })
 export class PluginsService implements OnDestroy {
 
-  pluginsStoreBaseEndpoint = "http://localhost:2000"
+  pluginsStoreBaseEndpoint = "http://localhost:4200/cxf"
   pluginsHandlerBaseEndpoint = "http://localhost:4200/cxf"
 
   public stopPolling = new Subject();
@@ -23,7 +23,7 @@ export class PluginsService implements OnDestroy {
   constructor(private http: HttpClient) { } 
 
   getAvailablePlugins() {
-    return this.http.get<PluginInfo[]>(this.pluginsStoreBaseEndpoint + "/bundles");
+    return this.http.get<PluginInfo[]>(this.pluginsStoreBaseEndpoint + "/host-application/micro-components/available");
   }
 
   getPluginHealth(plugin: PluginInfo) {

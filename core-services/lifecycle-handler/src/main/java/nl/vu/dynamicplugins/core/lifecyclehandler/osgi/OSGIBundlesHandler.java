@@ -1,0 +1,41 @@
+package nl.vu.dynamicplugins.core.lifecyclehandler.osgi;
+
+import nl.vu.dynamicplugins.core.lifecyclehandler.Activator;
+import org.osgi.framework.Bundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class OSGIBundlesHandler {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(OSGIBundlesHandler.class);
+    private final static String MICRO_COMPONENT_PACKAGE_PREFIX = "nl.vu.dynamicplugins";
+
+    public List<String> getActiveMicroComponentBundleNames() {
+        if(Activator.bundleContext == null) {
+            LOGGER.error("Cannot retrieve list of installed bundles because of empty Bundle Context");
+            return new ArrayList<>();
+        }
+
+        List<Bundle> bundlesList = Arrays.asList(Activator.bundleContext.getBundles());
+
+        return bundlesList.stream()
+                .filter(this::bundleIsActiveAndIsMicroComponent)
+                .map(Bundle::getSymbolicName)
+                .collect(Collectors.toList());
+    }
+
+    private boolean bundleIsActiveAndIsMicroComponent(Bundle bundle) {
+        if(bundle.getState() != Bundle.ACTIVE) {
+            return false;
+        }
+
+        String bundleName = bundle.getSymbolicName();
+
+       return bundleName.startsWith(MICRO_COMPONENT_PACKAGE_PREFIX);
+    }
+}

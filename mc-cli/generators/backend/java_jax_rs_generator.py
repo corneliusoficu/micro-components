@@ -1,7 +1,6 @@
 import os
 import sys
 
-from constants import MC_BACKEND_SUFFIX
 from constants import MC_CLI_HOME_PATH
 from generators.generator import ViewProvidingGenerator
 from helpers import file_helpers
@@ -9,7 +8,7 @@ from helpers import file_helpers
 
 class JavaJaxRSGenerator(ViewProvidingGenerator):
     def __init__(self, name, description, group_id):
-        self._name = self._artifact_id = f"{name.lower()}{MC_BACKEND_SUFFIX}"
+        self._name = self._artifact_id = name
         self._description = description
         self._group_id = group_id
 
@@ -17,8 +16,8 @@ class JavaJaxRSGenerator(ViewProvidingGenerator):
         self._description = self._description
         self._main_package_name = self._artifact_id.replace("-", "")
 
-    def generate(self, mc_path):
-        backend_path = self._generate_folder_for_backend(mc_path)
+    def generate(self, project_path):
+        backend_path = self._generate_folder_for_backend(project_path)
         self._generate_pom_xml_file(backend_path)
         self._generate_file_structure_for_java_project(backend_path)
 
@@ -29,8 +28,8 @@ class JavaJaxRSGenerator(ViewProvidingGenerator):
 
         return self._view_js_location
 
-    def _generate_folder_for_backend(self, mc_path):
-        backend_folder_path = f"{mc_path}/{self._name}"
+    def _generate_folder_for_backend(self, project_path):
+        backend_folder_path = f"{project_path}/{self._name}"
 
         if os.path.exists(backend_folder_path):
             print(f"Cannot generate backend file structure because of already existing directory {backend_folder_path}")

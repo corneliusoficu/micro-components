@@ -1,0 +1,1 @@
+console.log("Successfully started the lifecycle-handler Micro-Component")
