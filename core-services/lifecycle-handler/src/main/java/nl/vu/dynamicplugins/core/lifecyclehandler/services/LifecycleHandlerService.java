@@ -2,7 +2,9 @@ package nl.vu.dynamicplugins.core.lifecyclehandler.services;
 
 
 import nl.vu.dynamicplugins.core.base.services.BaseEndpoint;
-import nl.vu.dynamicplugins.core.lifecyclehandler.dtos.MicroComponentsNamesListDTO;
+import nl.vu.dynamicplugins.core.lifecyclehandler.dtos.MicroComponentDTO;
+import nl.vu.dynamicplugins.core.lifecyclehandler.dtos.MicroComponentsResponseDTO;
+import nl.vu.dynamicplugins.core.lifecyclehandler.helpers.ModelHelpers;
 import nl.vu.dynamicplugins.core.lifecyclehandler.osgi.OSGIBundlesHandler;
 import org.osgi.service.component.annotations.Component;
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component(service = LifecycleHandlerService.class, immediate = true, property = //
         { //
@@ -33,9 +36,13 @@ public class LifecycleHandlerService extends BaseEndpoint {
     @Produces({"application/json"})
     @Path("micro-components")
     public Response retrieveListOfAvailableMicroComponents() {
-        List<String> microComponentsNames = osgiBundlesHandler.getActiveMicroComponentBundleNames();
-        MicroComponentsNamesListDTO microComponentsNamesListDTO = new MicroComponentsNamesListDTO();
-        microComponentsNamesListDTO.setMicro_components_names(microComponentsNames);
+        List<MicroComponentDTO> microComponentsNames = osgiBundlesHandler.getActiveMicroComponentBundleNames()
+                .stream()
+                .map(ModelHelpers::microComponentToMicroComponentDTO)
+                .collect(Collectors.toList());
+
+        MicroComponentsResponseDTO microComponentsNamesListDTO = new MicroComponentsResponseDTO();
+        microComponentsNamesListDTO.setMicro_components(microComponentsNames);
         LOGGER.info("Returning the list of micro-components: {}", microComponentsNames);
         return Response.ok(microComponentsNamesListDTO).build();
     }

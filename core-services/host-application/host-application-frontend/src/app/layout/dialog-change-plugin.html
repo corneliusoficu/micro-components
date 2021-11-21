@@ -7,7 +7,7 @@
     <mat-selection-list #selectionOfPlugins [multiple]="false" [(ngModel)]="selectedBundle">
         <div *ngIf="!loading">
           <mat-list-option *ngFor="let pluginInfo of pluginInfoList" [value]="pluginInfo">
-            {{pluginInfo.name}}-{{pluginInfo.version}}.{{pluginInfo.extension}}
+            {{pluginInfo.name}}
           </mat-list-option>
         </div>
       </mat-selection-list>

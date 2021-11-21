@@ -1,13 +1,16 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, retry, switchMap, share, takeUntil, filter, take, timeout, takeWhile } from 'rxjs/operators';
+import { catchError, retry, switchMap, share, takeUntil, filter, take, timeout, takeWhile, map, tap } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, timer, Subject, interval, of } from 'rxjs';
 
-export interface PluginInfo {
+export interface MicroComponentsResponse {
+  micro_components: MicroComponent[]
+}
+
+export interface MicroComponent {
   name: string;
-  version: string;
-  extension: string;
+  location: string;
 }
 
 @Injectable({
@@ -23,32 +26,31 @@ export class PluginsService implements OnDestroy {
   constructor(private http: HttpClient) { } 
 
   getAvailablePlugins() {
-    return this.http.get<PluginInfo[]>(this.pluginsStoreBaseEndpoint + "/host-application/micro-components/available");
+    return this.http.get<MicroComponentsResponse>(this.pluginsStoreBaseEndpoint + "/lifecycle-handler/micro-components");
   }
 
-  getPluginHealth(plugin: PluginInfo) {
-    return this.http.get(`${this.pluginsHandlerBaseEndpoint}/${plugin.name}/health`).pipe(
+  getPluginHealth(microComponent: MicroComponent) {
+    return this.http.get(`${this.pluginsHandlerBaseEndpoint}/${microComponent.name}/health`).pipe(
       catchError(e => of({status: e.status}))
     )
   }
 
-  installPlugin(plugin: PluginInfo) {
+  installPlugin(microComponent: MicroComponent) {
     console.log("Executing post to install plugin!");
-    return this.http.post(this.pluginsHandlerBaseEndpoint + "/api/bundles", plugin).pipe(
-      catchError(this.handleError)
-    );
+    return of({"response": "success"})
   }
 
-  pollPluginInstalled(plugin: PluginInfo) {
-    return interval(2000).pipe(
-      switchMap(() => this.getPluginHealth(plugin)),
-      takeWhile((data: any) => data.status != 200),
+  pollPluginInstalled(microComponent: MicroComponent) {
+    return timer(1, 1000).pipe(
+      switchMap(() => this.getPluginHealth(microComponent)),
+      filter((r:any) => r.status == 200),
+      take(1),
       timeout(30000)
     );
   }
 
-  getPluginLoadingUrl(plugin: PluginInfo) {
-    return `${this.pluginsHandlerBaseEndpoint}/${plugin.name}/view`
+  getPluginLoadingUrl(microComponent: MicroComponent) {
+    return `${this.pluginsHandlerBaseEndpoint}/${microComponent.name}/view`
   }
 
   ngOnDestroy() {

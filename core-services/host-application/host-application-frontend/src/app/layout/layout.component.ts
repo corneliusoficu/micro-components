@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Inject, OnDestroy } from '@angular/core';
-import { PluginsService, PluginInfo } from '../plugins.service';
+import { PluginsService, MicroComponent, MicroComponentsResponse } from '../plugins.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { ThrowStmt } from '@angular/compiler';
+import { map } from 'rxjs/operators';
 
 export interface DialogData {
   pluginIndex: number;
@@ -42,7 +43,7 @@ export class LayoutComponent implements OnInit {
     if(plugin === undefined) {
       return "-"
     }
-    return `${plugin.name}-${plugin.version}.${plugin.extension}`;
+    return `${plugin.name}`;
   }
 
   doesTileContainPlugin(index) {
@@ -62,8 +63,8 @@ export class LayoutComponent implements OnInit {
 })
 export class DialogChangePlugin implements OnDestroy {
   
-  pluginInfoList: PluginInfo[] | undefined;
-  plugin: PluginInfo | undefined;
+  pluginInfoList: MicroComponent[] | undefined;
+  plugin: MicroComponent | undefined;
   pluginIndex = 0;
   pluginAlreadyInstalled = false;
   loading = true;
@@ -77,11 +78,18 @@ export class DialogChangePlugin implements OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private pluginService: PluginsService) {
       this.pluginIndex = data.pluginIndex;
-      this.pluginService.getAvailablePlugins().subscribe((data: PluginInfo[]) => {
-        this.pluginInfoList = data;
+      this.pluginService.getAvailablePlugins().subscribe((data: MicroComponentsResponse) => {
+        this.pluginInfoList = this.parseMicroComponentData(data.micro_components);
         this.handleAlreadySelectedBundle();
         this.loading = false;
       });
+  }
+
+  parseMicroComponentData(microComponents: MicroComponent[]): MicroComponent[]{
+    return microComponents.map(mc => {
+      mc.name = mc.name.replace("nl.vu.dynamicplugins.", "")
+      return mc;
+    })
   }
 
   handleAlreadySelectedBundle() {
@@ -99,8 +107,7 @@ export class DialogChangePlugin implements OnDestroy {
 
     let already_loaded_bundle = this.pluginInfoList.filter((plugin,index) => { 
       return plugin.name == loaded_bundle_for_index.name &&
-      plugin.version == loaded_bundle_for_index.version && 
-      plugin.extension == loaded_bundle_for_index.extension
+      plugin.location == loaded_bundle_for_index.location
     })
 
     if(already_loaded_bundle.length == 0) {

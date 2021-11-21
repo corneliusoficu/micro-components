@@ -1,6 +1,7 @@
 package nl.vu.dynamicplugins.core.lifecyclehandler.osgi;
 
 import nl.vu.dynamicplugins.core.lifecyclehandler.Activator;
+import nl.vu.dynamicplugins.core.lifecyclehandler.models.MicroComponent;
 import org.osgi.framework.Bundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,7 @@ public class OSGIBundlesHandler {
     private final static String MICRO_COMPONENT_PACKAGE_PREFIX = "nl.vu.dynamicplugins";
     private final static String MICRO_COMPONENT_PACKAGE_CORE_SUFFIX = ".core";
 
-    public List<String> getActiveMicroComponentBundleNames() {
+    public List<MicroComponent> getActiveMicroComponentBundleNames() {
         if(Activator.bundleContext == null) {
             LOGGER.error("Cannot retrieve list of installed bundles because of empty Bundle Context");
             return new ArrayList<>();
@@ -26,8 +27,15 @@ public class OSGIBundlesHandler {
 
         return bundlesList.stream()
                 .filter(this::bundleIsActiveAndIsMicroComponent)
-                .map(Bundle::getSymbolicName)
+                .map(this::toMicroComponent)
                 .collect(Collectors.toList());
+    }
+
+    private MicroComponent toMicroComponent(Bundle bundle) {
+        MicroComponent microComponent = new MicroComponent();
+        microComponent.setName(bundle.getSymbolicName());
+        microComponent.setLocation(bundle.getLocation());
+        return microComponent;
     }
 
     private boolean bundleIsActiveAndIsMicroComponent(Bundle bundle) {
