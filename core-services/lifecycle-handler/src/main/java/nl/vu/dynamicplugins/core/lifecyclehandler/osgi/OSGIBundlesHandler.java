@@ -14,6 +14,7 @@ public class OSGIBundlesHandler {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(OSGIBundlesHandler.class);
     private final static String MICRO_COMPONENT_PACKAGE_PREFIX = "nl.vu.dynamicplugins";
+    private final static String MICRO_COMPONENT_PACKAGE_CORE_SUFFIX = ".core";
 
     public List<String> getActiveMicroComponentBundleNames() {
         if(Activator.bundleContext == null) {
@@ -35,7 +36,11 @@ public class OSGIBundlesHandler {
         }
 
         String bundleName = bundle.getSymbolicName();
+        if(!bundleName.startsWith(MICRO_COMPONENT_PACKAGE_PREFIX)) {
+            return false;
+        }
 
-       return bundleName.startsWith(MICRO_COMPONENT_PACKAGE_PREFIX);
+        String coreServicesPackageName = MICRO_COMPONENT_PACKAGE_PREFIX + MICRO_COMPONENT_PACKAGE_CORE_SUFFIX;
+        return !bundleName.startsWith(coreServicesPackageName);
     }
 }

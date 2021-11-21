@@ -1,4 +1,4 @@
-package {{group_id}}.{{main_package_name}};
+package nl.vu.dynamicplugins.core.base;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -10,10 +10,12 @@ public class Activator implements BundleActivator {
     private final static Logger LOGGER = LoggerFactory.getLogger(Activator.class);
 
     public void start(BundleContext arg0) throws Exception {
-        LOGGER.info("Starting {{endpoint_name}} Micro-Component...");
+        String packageName = getClass().getPackage().getImplementationTitle();
+        LOGGER.info(String.format("Starting %s Bundle...", packageName));
     }
 
     public void stop(BundleContext arg0) throws Exception {
-        LOGGER.info("Stopping {{endpoint_name}} Micro-Component...");
+        String packageName = getClass().getPackage().getImplementationTitle();
+        LOGGER.info(String.format("Stopping %s Bundle...", packageName));
     }
 }

@@ -8,7 +8,7 @@
     <artifactId>lifecycle-handler</artifactId>
     <version>1.0.0</version>
     <packaging>bundle</packaging>
-    <name>nl.vu.dynamicplugins.lifecycle-handler</name>
+    <name>nl.vu.dynamicplugins.core.lifecycle-handler</name>
     <description>Backend generator for JAX-RS Project using mc-cli</description>
 
     <properties>
@@ -29,7 +29,7 @@
             <version>1.3.0</version>
         </dependency>
         <dependency>
-            <groupId>nl.vu.dynamicplugins</groupId>
+            <groupId>nl.vu.dynamicplugins.core</groupId>
             <artifactId>base-micro-components</artifactId>
             <version>1.0</version>
         </dependency>
@@ -89,7 +89,7 @@
                             org.apache.cxf.jaxrs.client,
                             javax.ws.rs,
                             javax.ws.rs.core,
-                            nl.vu.dynamicplugins.base.*
+                            nl.vu.dynamicplugins.core.base.*
                         </Import-Package>
                         <Export-Package>nl.vu.dynamicplugins.core.lifecyclehandler.*</Export-Package>
                     </instructions>

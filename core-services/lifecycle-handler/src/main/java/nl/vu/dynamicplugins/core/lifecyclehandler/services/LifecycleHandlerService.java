@@ -1,7 +1,7 @@
 package nl.vu.dynamicplugins.core.lifecyclehandler.services;
 
 
-import nl.vu.dynamicplugins.base.services.BaseEndpoint;
+import nl.vu.dynamicplugins.core.base.services.BaseEndpoint;
 import nl.vu.dynamicplugins.core.lifecyclehandler.dtos.MicroComponentsNamesListDTO;
 import nl.vu.dynamicplugins.core.lifecyclehandler.osgi.OSGIBundlesHandler;
 import org.osgi.service.component.annotations.Component;
