@@ -7,8 +7,9 @@ from helpers import file_helpers
 
 
 class JavaJaxRSGenerator(ViewProvidingGenerator):
-    def __init__(self, name, description, group_id):
-        self._name = self._artifact_id = name
+    def __init__(self, folder_name, artifact_id, description, group_id):
+        self._folder_name = folder_name
+        self._artifact_id = artifact_id
         self._description = description
         self._group_id = group_id
 
@@ -29,14 +30,14 @@ class JavaJaxRSGenerator(ViewProvidingGenerator):
         return self._view_js_location
 
     def _generate_folder_for_backend(self, project_path):
-        backend_folder_path = f"{project_path}/{self._name}"
+        backend_folder_path = f"{project_path}/{self._folder_name}"
 
         if os.path.exists(backend_folder_path):
             print(f"Cannot generate backend file structure because of already existing directory {backend_folder_path}")
             sys.exit(-1)
 
         os.mkdir(backend_folder_path)
-        print(f"Created directory {self._name}")
+        print(f"Created directory {self._folder_name}")
         return backend_folder_path
 
     def _generate_file_structure_for_java_project(self, backend_path):
@@ -56,7 +57,7 @@ class JavaJaxRSGenerator(ViewProvidingGenerator):
         os.mkdir(entire_resources_structure)
         os.makedirs(entire_test_structure)
 
-        endpoint_name = "-".join(c.lower() for c in self._name.split("-"))
+        endpoint_name = "-".join(c.lower() for c in self._artifact_id.split("-"))
 
         print("Generated entire file structure for micro-component")
 
@@ -79,7 +80,7 @@ class JavaJaxRSGenerator(ViewProvidingGenerator):
                                           export_package=export_package)
 
     def _generate_main_class(self, path_to_services_package, endpoint_name):
-        class_name_components = [c.capitalize() for c in self._name.split("-")]
+        class_name_components = [c.capitalize() for c in self._artifact_id.split("-")]
         class_name = "".join(class_name_components) + "Service"
 
         main_class_template = f'{MC_CLI_HOME_PATH}/templates/java_jax_rs/Service.java.jinja'

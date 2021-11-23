@@ -17,7 +17,7 @@ class MicroComponentGenerator(Generator):
 
         # TODO: Replace hardcoded backend type
         backend_name = f"{name.lower()}{MC_BACKEND_SUFFIX}"
-        self._backend_generator = MicroComponentGenerator.backend_generator_by_type(backend_name, description,group_id, "JAX-RS")
+        self._backend_generator = MicroComponentGenerator.backend_generator_by_type(backend_name, name.lower(), description, group_id, "JAX-RS")
         self._frontend_generator = MicroComponentGenerator.frontend_generator_by_ui_type(ui, self._name)
 
     def generate(self, mc_directory):
@@ -51,9 +51,9 @@ class MicroComponentGenerator(Generator):
             return AngularGenerator(name)
 
     @staticmethod
-    def backend_generator_by_type(name, description, group_id, type_of_backend):
+    def backend_generator_by_type(folder_name, artifact_id, description, group_id, type_of_backend):
         if type_of_backend == "JAX-RS":
-            return JavaJaxRSGenerator(name, description, group_id)
+            return JavaJaxRSGenerator(folder_name, artifact_id, description, group_id)
 
 
 

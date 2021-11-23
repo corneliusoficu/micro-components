@@ -1,1 +1,15 @@
-<p>home works!</p>
+<div class="plugins-list" *ngIf="arePluginsLoaded();else noPluginLoadedMessage">
+    <div *ngFor="let x of [].constructor(NR_COLUMNS); let i=index" class="plugin-column-content">
+        <div class="plugin-column-content">
+            <div *ngIf="isPluginLoadedForTile(i)">
+                <ax-lazy-element *axLazyElementDynamic="getPluginName(i), url: getPluginLoadUrl(i);"></ax-lazy-element>
+            </div>
+        </div>
+    </div>
+</div>
+    
+<ng-template #noPluginLoadedMessage>
+    <div class="error-message-no-content mat-typography">
+        <h1>Nothing to display!</h1>
+    </div>
+</ng-template>

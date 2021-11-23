@@ -21,14 +21,14 @@ class AngularGenerator(ViewProvidingGenerator):
             print("Could not identify angular CLI, exiting...")
             sys.exit(-1)
 
-        angular_project_name = f"{self._name}-frontend"
-        self._angular_project_location = os.path.join(mc_directory, angular_project_name)
+        angular_project_location_name = f"{self._name}-frontend"
+        self._angular_project_location = os.path.join(mc_directory, angular_project_location_name)
 
-        self._generate_new_angular_project(mc_directory, angular_project_name)
+        self._generate_new_angular_project(mc_directory, angular_project_location_name)
         self._install_angular_elements_npm_package(self._angular_project_location)
-        self._create_main_component(self._angular_project_location, angular_project_name)
-        self._create_app_module(self._angular_project_location, angular_project_name)
-        self._update_package_json_file(self._angular_project_location, angular_project_name)
+        self._create_main_component(self._angular_project_location, self._name)
+        self._create_app_module(self._angular_project_location, self._name)
+        self._update_package_json_file(self._angular_project_location, angular_project_location_name)
         self._deployer.deploy(self._angular_project_location)
 
     def get_view_location(self):
@@ -94,12 +94,12 @@ class AngularGenerator(ViewProvidingGenerator):
             app_module_location,
             project_name=project_name)
 
-    def _update_package_json_file(self, project_location, project_name):
+    def _update_package_json_file(self, project_location, project_location_name):
         print("Updating the package.json file")
 
-        runtime_js = f"{project_location}/dist/{project_name}/runtime-es2015.js"
-        polyfills_js = f"{project_location}/dist/{project_name}/polyfills-es2015.js"
-        main_js = f"{project_location}/dist/{project_name}/main-es2015.js"
+        runtime_js = f"{project_location}/dist/{project_location_name}/runtime-es2015.js"
+        polyfills_js = f"{project_location}/dist/{project_location_name}/polyfills-es2015.js"
+        main_js = f"{project_location}/dist/{project_location_name}/main-es2015.js"
 
         package_json_file = f"{project_location}/package.json"
         package_json = file_helpers.read_json_file(package_json_file)
