@@ -3,6 +3,7 @@ import { PluginsService, MicroComponent, MicroComponentsResponse } from '../plug
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { ThrowStmt } from '@angular/compiler';
 import { map } from 'rxjs/operators';
+import { SettingsService } from '../settings.service';
 
 export interface DialogData {
   pluginIndex: number;
@@ -15,11 +16,17 @@ export interface DialogData {
 })
 export class LayoutComponent implements OnInit {
 
-  public NR_COLUMNS = 3;
-
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private settingsService: SettingsService) { }
 
   ngOnInit(): void {
+  }
+
+  getNumberOfColumns() {
+    return this.settingsService.getNumberOfColumns();
+  }
+
+  getNumberOfRows() {
+    return this.settingsService.getNumberOfRows();
   }
 
   onInstallPluginButtonPressed(index) {

@@ -2,6 +2,7 @@
    
 import { Component, OnInit } from '@angular/core';
 import { PluginsService } from '../plugins.service';
+import { SettingsService } from '../settings.service';
 
 @Component({
   selector: 'app-home',
@@ -9,10 +10,7 @@ import { PluginsService } from '../plugins.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
-  public NR_COLUMNS = 3;
-
-  constructor(private pluginService: PluginsService) { }
+  constructor(private pluginService: PluginsService, private settingsService: SettingsService) { }
 
   ngOnInit(): void {
   }
@@ -43,5 +41,13 @@ export class HomeComponent implements OnInit {
     let loaded_bundles = JSON.parse(localStorage.getItem("loaded_bundles"));
     const hasKeys = !!Object.keys(loaded_bundles).length;
     return hasKeys;
+  }
+
+  getNumberOfColumns() {
+    return this.settingsService.getNumberOfColumns();
+  }
+
+  getNumberOfRows() {
+    return this.settingsService.getNumberOfRows();
   }
 }
