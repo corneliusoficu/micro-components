@@ -15,6 +15,7 @@ class AngularDeployer(Deployer):
             print(f"Could not identify package.json in location: {location} to build Angular project, exiting....")
             sys.exit(-1)
 
+        os.chdir(location)
         self._run_npm_build()
         self._run_npm_package()
 

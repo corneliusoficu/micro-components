@@ -5,6 +5,7 @@ import re
 MC_CLI_HOME_PATH = pathlib.Path(__file__).parent.resolve()
 MC_PREFIX = "mc-"
 MC_BACKEND_SUFFIX = "-backend"
+MC_FRONTEND_SUFFIX = "-frontend"
 
 CURRENT_WORKING_DIR = os.getcwd()
 

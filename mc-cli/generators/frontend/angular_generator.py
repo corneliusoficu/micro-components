@@ -21,7 +21,7 @@ class AngularGenerator(ViewProvidingGenerator):
             print("Could not identify angular CLI, exiting...")
             sys.exit(-1)
 
-        angular_project_location_name = f"{self._name}-frontend"
+        angular_project_location_name = f"{self._name}{constants.MC_FRONTEND_SUFFIX}"
         self._angular_project_location = os.path.join(mc_directory, angular_project_location_name)
 
         self._generate_new_angular_project(mc_directory, angular_project_location_name)
