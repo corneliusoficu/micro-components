@@ -17,3 +17,4 @@ KARAF_USER_PRIVATE_KEY_LOCATION = f"{MC_CLI_HOME_PATH}/karaf.id_rsa"
 ANGULAR_REGEX_CLI_VERSION = re.compile(r"Angular CLI: *((\d+)\.?(\d+)?\.?(\d+)?)")
 ANGULAR_DEFAULT_STYLE = "css"
 ANGULAR_DEFAULT_ROUTING = "false"
+ANGULAR_ES_VERSION = "es5"

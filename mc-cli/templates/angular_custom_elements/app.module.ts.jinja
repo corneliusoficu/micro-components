@@ -19,7 +19,8 @@ export class AppModule {
   constructor(private injector: Injector) {}
 
   ngDoBootstrap() {
+    console.log("Registering custom element with name: app-{{project_name}}")
     const customElement = createCustomElement(MainComponent, {injector: this.injector})
-    customElements.define('app-{{project_name}}', customElement)
+    customElements.get('app-{{project_name}}') || customElements.define('app-{{project_name}}', customElement)
   }
 }

@@ -22,7 +22,6 @@ body {
 }
 
 .plugin-column-content {
-    display: flex;
     flex: 1 1 auto;
     margin: 5px;
 }

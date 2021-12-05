@@ -50,7 +50,7 @@ export class PluginsService implements OnDestroy {
   }
 
   getPluginLoadingUrl(microComponent: MicroComponent) {
-    return `${this.pluginsHandlerBaseEndpoint}/${microComponent.name}/view`
+    return `${this.pluginsHandlerBaseEndpoint}/${microComponent.name}/app-${microComponent.name}.js`
   }
 
   ngOnDestroy() {

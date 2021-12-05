@@ -7,9 +7,11 @@ from deployers.mc_deployer import MicroComponentDeployer
 
 
 @click.group(invoke_without_command=True)
+@click.pass_context
 @click.option("--update", is_flag=True)
-def deploy(update):
-    MicroComponentDeployer().deploy(os.getcwd(), force_update=update)
+def deploy(ctx, update):
+    if ctx.invoked_subcommand is None:
+        MicroComponentDeployer().deploy(os.getcwd(), force_update=update)
 
 
 @deploy.command("jar")

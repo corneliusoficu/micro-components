@@ -2,7 +2,7 @@
     <div *ngFor="let x of [].constructor(getNumberOfColumns()); let i=index" class="plugin-column-content">
         <div class="plugin-column-content">
             <div *ngIf="isPluginLoadedForTile(i)">
-                <ax-lazy-element *axLazyElementDynamic="getPluginName(i), url: getPluginLoadUrl(i);"></ax-lazy-element>
+                <ax-lazy-element *axLazyElementDynamic="getPluginName(i), url: getPluginLoadUrl(i), errorTemplate: errorMC;"></ax-lazy-element>
             </div>
         </div>
     </div>
@@ -13,3 +13,5 @@
         <h1>Nothing to display!</h1>
     </div>
 </ng-template>
+
+<ng-template #errorMC>An exception occured when loading the micro-component!</ng-template>

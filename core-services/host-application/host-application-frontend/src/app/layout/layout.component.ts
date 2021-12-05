@@ -46,6 +46,11 @@ export class LayoutComponent implements OnInit {
 
   getLoadedPluginForIndex(index) {
     let loaded_bundles = JSON.parse(localStorage.getItem("loaded_bundles"));
+    
+    if(!loaded_bundles) {
+      return null;
+    }
+
     let plugin = loaded_bundles[index];
     if(plugin === undefined) {
       return "-"
@@ -55,6 +60,9 @@ export class LayoutComponent implements OnInit {
 
   doesTileContainPlugin(index) {
     let loaded_bundles = JSON.parse(localStorage.getItem("loaded_bundles"));
+    if(!loaded_bundles) {
+      return false;
+    }
     let plugin = loaded_bundles[index];
     if(plugin === undefined) {
       return false;
