@@ -10,7 +10,7 @@ MC_FRONTEND_SUFFIX = "-frontend"
 CURRENT_WORKING_DIR = os.getcwd()
 
 # TODO: Change this to point to correct location or read from PATH
-KARAF_BIN_LOCATION = '/Users/corneliudumitru.sofi/Downloads/apache-karaf-4.3.2/bin'
+KARAF_BIN_LOCATION = f"{os.getenv('KARAF_HOME')}/bin"
 # TODO: Change this to point to correct location or read from PATH
 KARAF_USER_PRIVATE_KEY_LOCATION = f"{MC_CLI_HOME_PATH}/karaf.id_rsa"
 

@@ -163,10 +163,18 @@ class AngularGenerator(ViewProvidingGenerator):
         print("Generating the index.html")
         index_html_template = f"{MC_CLI_HOME_PATH}/templates/angular_custom_elements/index.html.jinja"
         index_html_location = f"{project_location}/src/index.html"
+        custom_elements_es5_adapter_contents = ""
+
+        if constants.ANGULAR_ES_VERSION == "es5":
+            adapter_path = f"{MC_CLI_HOME_PATH}/templates/angular_custom_elements/custom-elements-es5-adapter.js.jinja"
+            with open(adapter_path, "r") as adapter_file:
+                custom_elements_es5_adapter_contents = f"<script>{adapter_file.read()}</script>"
+
         file_helpers.create_template_file(
             index_html_template,
             index_html_location,
-            project_name=project_name)
+            project_name=project_name,
+            custom_elements_es5_adapter_contents=custom_elements_es5_adapter_contents)
 
     def _update_build_config(self, project_location, project_location_name):
         print("Updating the package.json file")

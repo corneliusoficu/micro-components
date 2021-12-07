@@ -1,4 +1,4 @@
-#!/Users/corneliudumitru.sofi/Master_VU_UvA/Master_Thesis/dynamic-plugins/mc-cli/venv/bin/python3
+#!//bin/python3
 
 import click
 import commands.deploy_commands as deploy_group
