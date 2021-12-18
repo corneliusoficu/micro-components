@@ -1,8 +1,10 @@
 .mvn/
-target/
 .idea/
-.DS_Store
-*.jar
+.vagrant/
+target/
 test_project/
+.DS_Store
+# package-lock.json
+*.jar
 *.iml
-.vagrant
+*.log

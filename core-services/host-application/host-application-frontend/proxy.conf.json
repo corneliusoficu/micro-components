@@ -1,12 +1,12 @@
 {
     "/cxf/lifecycle-handler/micro-components":
     {
-        "target": "http://localhost:9991",
+        "target": "http://localhost:8181",
         "secure": false
     },
     "/cxf/*":
     {
-        "target": "http://localhost:9991",
+        "target": "http://localhost:8181",
         "secure": false
     } 
 }

@@ -1,5 +1,9 @@
+# VERSIONS
+
 ANGULAR_CLI_VERSION=9.0.3
 APACHE_KARAF_VERSION=4.3.3
+
+# UPDATE PACKAGE LISTS FOR NEW VM
 
 echo "Executing apt-get update"
 sudo apt-get update
@@ -66,13 +70,18 @@ fi
 
 if [ ! -d "/opt/apache-karaf-${APACHE_KARAF_VERSION}" ]; then
     echo "Installing Apache Karaf"
-    APACHE_KARAF_DOWNLOAD_LINK="https://dlcdn.apache.org/karaf/${APACHE_KARAF_VERSION}/apache-karaf-${APACHE_KARAF_VERSION}.tar.gz"
+    APACHE_KARAF_DOWNLOAD_LINK="https://archive.apache.org/dist/karaf/${APACHE_KARAF_VERSION}/apache-karaf-${APACHE_KARAF_VERSION}.tar.gz"
     cd /opt 
+    echo "Downloading Aapache KARAF tar.gz from ${APACHE_KARAF_DOWNLOAD_LINK}"
     wget -q "${APACHE_KARAF_DOWNLOAD_LINK}"
+    echo "Extracting Apache Karaf archive"
     tar -xzf apache-karaf-"${APACHE_KARAF_VERSION}".tar.gz 
     rm -f apache-karaf-"${APACHE_KARAF_VERSION}".tar.gz
     chown vagrant:vagrant -R /opt/apache-karaf-"${APACHE_KARAF_VERSION}"/
     
+    # GENERATE KARAF USER PUBLIC PRIVATE KEY PAIR FOR THE MC-CLI
+    
+    echo "Generating public private key pair for karaf user to be used by MC-CLI"
     cd /home/vagrant/.ssh
     ssh-keygen -t dsa -f karaf.id_dsa -N karaf
     PUBLIC_KEY_CONTENTS="$(cat /home/vagrant/.ssh/karaf.id_dsa.pub)"
@@ -84,6 +93,8 @@ if [ ! -d "/opt/apache-karaf-${APACHE_KARAF_VERSION}" ]; then
     
     echo "karaf = karaf,_g_:admingroup" > /opt/apache-karaf-"${APACHE_KARAF_VERSION}"/etc/users.properties
     echo "_g_\:admingroup = group,admin,manager,viewer,systembundles,ssh" >> /opt/apache-karaf-"${APACHE_KARAF_VERSION}"/etc/users.properties
+
+    cp /tmp/org.apache.karaf.features.cfg /opt/apache-karaf-"${APACHE_KARAF_VERSION}"/etc/
 fi
 
 # MC-CLI DEPENDENCIES
