@@ -39,6 +39,11 @@ install_pkg_if_not_present python3-venv
 echo "Ensuring openjdk-11-jdk exists"
 install_pkg_if_not_present openjdk-11-jdk
 
+# MAVEN
+
+echo "Ensuring maven exists"
+install_pkg_if_not_present maven
+
 # NPM
 
 if which node > /dev/null
@@ -101,7 +106,9 @@ fi
 
 echo "Installing dependencies for mc-cli"
 pip3 install -r /vagrant/mc-cli/requirements.txt
-ln -s /vagrant/mc-cli/mc-cli /bin/mc-cli 
+if [ ! -f "/bin/mc-cli" ]; then
+    ln -s /vagrant/mc-cli/mc-cli /bin/mc-cli 
+fi
 
 
 # ENVIRONMENT VARIABLES
@@ -111,5 +118,7 @@ echo "export PATH=$PATH:$JAVA_HOME/bin" >> /home/vagrant/.bashrc
 echo "export KARAF_HOME=/opt/apache-karaf-${APACHE_KARAF_VERSION}" >> /home/vagrant/.bashrc
 echo "export KARAF_USER_PRIVATE_KEY_LOCATION=/home/vagrant/.ssh/karaf.id_dsa" >> /home/vagrant/.bashrc
 
+# TO START SSH SESSIONS IN /vagrant FOLDER
 
+echo "cd /vagrant" >> /home/vagrant/.bashrc
 

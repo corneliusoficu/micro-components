@@ -1,0 +1,18 @@
+<h3 id="portfolio-stocks-header">Your Portfolio Stocks</h3>
+<mat-selection-list #selectedStocks [multiple]="false">
+    <mat-list-option *ngFor="let stock of portfolioStocks">
+        <div class="portfolio-stocks-list-item" mat-line>
+            <div>
+                {{stock.name}}
+            </div>
+            <div>
+                <strong>{{stock.totalValue}} €</strong>
+            </div>
+        </div>
+        <div mat-line>{{stock.exchange}} &bull; {{stock.shares}} Shares</div>
+    </mat-list-option>
+</mat-selection-list>
+<div class="total-value-div">
+    <h3 style="padding-left:16px;"><strong>Total Value:</strong></h3>
+    <h3 style="padding-right: 32px;"><strong>143,070€</strong></h3>
+</div>

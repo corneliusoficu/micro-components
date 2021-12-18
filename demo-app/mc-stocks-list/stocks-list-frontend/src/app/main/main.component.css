@@ -1,0 +1,17 @@
+#portfolio-stocks-header {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.portfolio-stocks-list-item{
+    display: flex!important;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.total-value-div{
+    display: flex!important;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 16px;
+}   
