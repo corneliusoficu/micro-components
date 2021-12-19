@@ -71,6 +71,14 @@ if which ng > /dev/null
         echo "Angular version: : $(ng --version)"
 fi
 
+# MC-CLI DEPENDENCIES
+
+echo "Installing dependencies for mc-cli"
+pip3 install -r /vagrant/mc-cli/requirements.txt
+if [ ! -f "/bin/mc-cli" ]; then
+    ln -s /vagrant/mc-cli/mc-cli /bin/mc-cli 
+fi
+
 # APACHE KARAF
 
 if [ ! -d "/opt/apache-karaf-${APACHE_KARAF_VERSION}" ]; then
@@ -100,16 +108,8 @@ if [ ! -d "/opt/apache-karaf-${APACHE_KARAF_VERSION}" ]; then
     echo "_g_\:admingroup = group,admin,manager,viewer,systembundles,ssh" >> /opt/apache-karaf-"${APACHE_KARAF_VERSION}"/etc/users.properties
 
     cp /tmp/org.apache.karaf.features.cfg /opt/apache-karaf-"${APACHE_KARAF_VERSION}"/etc/
+    rm /tmp/org.apache.karaf.features.cfg
 fi
-
-# MC-CLI DEPENDENCIES
-
-echo "Installing dependencies for mc-cli"
-pip3 install -r /vagrant/mc-cli/requirements.txt
-if [ ! -f "/bin/mc-cli" ]; then
-    ln -s /vagrant/mc-cli/mc-cli /bin/mc-cli 
-fi
-
 
 # ENVIRONMENT VARIABLES
 
@@ -117,6 +117,12 @@ echo "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> /home/vagrant/.bas
 echo "export PATH=$PATH:$JAVA_HOME/bin" >> /home/vagrant/.bashrc
 echo "export KARAF_HOME=/opt/apache-karaf-${APACHE_KARAF_VERSION}" >> /home/vagrant/.bashrc
 echo "export KARAF_USER_PRIVATE_KEY_LOCATION=/home/vagrant/.ssh/karaf.id_dsa" >> /home/vagrant/.bashrc
+
+# START KARAF AND CORE-SERVICES
+
+echo "Installing base-micro-components..."
+cd /vagrant/core-services/base-micro-components
+mvn clean install
 
 # TO START SSH SESSIONS IN /vagrant FOLDER
 
