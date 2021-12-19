@@ -1,0 +1,3 @@
+[submodule "micro-components-demo-app"]
+	path = micro-components-demo-app
+	url = https://github.com/corneliusoficu/micro-components-demo-app.git
