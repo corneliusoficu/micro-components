@@ -1,0 +1,24 @@
+
+:host {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.login-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+}
+  
+.full-width {
+    width: 100%;
+}
+
+.login-button {
+    margin-top: 15px!important;
+}
