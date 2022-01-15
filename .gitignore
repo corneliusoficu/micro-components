@@ -8,3 +8,6 @@ test_project/
 *.jar
 *.iml
 *.log
+.settings/
+.classpath
+.project
