@@ -1,18 +1,17 @@
 
-:host {
-    width: 100%;
-    justify-content: center;
-    align-items: center;
+.login-container {
     display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
-
 .login-form {
     min-width: 150px;
     max-width: 500px;
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-self: center;
 }
   
 .full-width {
@@ -21,4 +20,17 @@
 
 .login-button {
     margin-top: 15px!important;
+}
+
+.login-image {
+    margin-bottom: 15px;
+}
+
+.loading-bar {
+    margin-bottom: 15px;
+}
+
+.auth-error-container{
+    color: red;
+    margin-top: 15px;
 }

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, retry, switchMap, share, takeUntil, filter, take, timeout, takeWhile, map, tap } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, timer, Subject, interval, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 export interface MicroComponentsResponse {
   micro_components: MicroComponent[]
@@ -18,8 +19,8 @@ export interface MicroComponent {
 })
 export class PluginsService implements OnDestroy {
 
-  pluginsStoreBaseEndpoint = "http://localhost:4200/cxf"
-  pluginsHandlerBaseEndpoint = "http://localhost:4200/cxf"
+  pluginsStoreBaseEndpoint = `${environment.backendHost}/cxf`
+  pluginsHandlerBaseEndpoint = `${environment.backendHost}/cxf`
 
   public stopPolling = new Subject();
 
