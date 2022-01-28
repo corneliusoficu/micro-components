@@ -18,7 +18,11 @@ export class AuthenticationService {
   }
 
   login(email: string, password: string) {
-    return this.http.post<any>(`${environment.backendHost}/users/authenticate`, { email, password })
+    var request = {
+      "email": email,
+      "password": password
+    };
+    return this.http.post<any>(`${environment.backendHost}/cxf/auth-handler/login`, request)
         .pipe(map(user => {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
             localStorage.setItem('currentUser', JSON.stringify(user));
