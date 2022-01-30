@@ -11,3 +11,4 @@ test_project/
 .settings/
 .classpath
 .project
+.db-data/

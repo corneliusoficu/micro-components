@@ -106,9 +106,13 @@ if [ ! -d "/opt/apache-karaf-${APACHE_KARAF_VERSION}" ]; then
     
     echo "karaf = karaf,_g_:admingroup" > /opt/apache-karaf-"${APACHE_KARAF_VERSION}"/etc/users.properties
     echo "_g_\:admingroup = group,admin,manager,viewer,systembundles,ssh" >> /opt/apache-karaf-"${APACHE_KARAF_VERSION}"/etc/users.properties
-
+    
+    # SETTING KARAF CONFIGURATION
     cp /tmp/org.apache.karaf.features.cfg /opt/apache-karaf-"${APACHE_KARAF_VERSION}"/etc/
     rm /tmp/org.apache.karaf.features.cfg
+
+    cp /tmp/config.properties /opt/apache-karaf-"${APACHE_KARAF_VERSION}"/etc/
+    rm /tmp/config.properties
 fi
 
 # ENVIRONMENT VARIABLES
@@ -118,7 +122,7 @@ echo "export PATH=$PATH:$JAVA_HOME/bin" >> /home/vagrant/.bashrc
 echo "export KARAF_HOME=/opt/apache-karaf-${APACHE_KARAF_VERSION}" >> /home/vagrant/.bashrc
 echo "export KARAF_USER_PRIVATE_KEY_LOCATION=/home/vagrant/.ssh/karaf.id_dsa" >> /home/vagrant/.bashrc
 
-# START KARAF AND CORE-SERVICES
+# INSTALL BASE MICRO-COMPONENTS
 
 echo "Installing base-micro-components..."
 cd /vagrant/core-services/base-micro-components
