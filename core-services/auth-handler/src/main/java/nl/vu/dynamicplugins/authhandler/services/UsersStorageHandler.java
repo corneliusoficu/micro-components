@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class UsersStorageHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(UsersStorageHandler.class);
 
-    private static final String DEFAULT_ISSUER = "corneliu.soficu";
+    private static final String DEFAULT_ISSUER = "micro-components-application";
     private static final Long DEFAULT_TTL_HOURS = 24L;
 
     private final MongoDBHandler mongoDBHandler;
