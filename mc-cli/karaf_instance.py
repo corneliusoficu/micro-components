@@ -53,14 +53,12 @@ class KarafInstance:
                                 stdout=subprocess.PIPE)
         result = result.stdout.decode('UTF-8')
         result_lines = result.splitlines()
-        if len(result_lines) != 2:
-            return False
 
-        running_bundle_info = result_lines[1].split('\t')
+        running_bundle_info = result_lines[-1].split('\t')
         running_bundle_status = running_bundle_info[1]
         running_bundle_name = running_bundle_info[4]
 
         if running_bundle_name != name:
             return False
 
-        return running_bundle_status == 'Active'
+        return running_bundle_status in ['Active', 'Waiting']

@@ -2,6 +2,7 @@
 
 ANGULAR_CLI_VERSION=9.0.3
 APACHE_KARAF_VERSION=4.3.3
+MONGO_DB_VERSION=4.4
 
 # UPDATE PACKAGE LISTS FOR NEW VM
 
@@ -74,7 +75,7 @@ fi
 # MC-CLI DEPENDENCIES
 
 echo "Installing dependencies for mc-cli"
-pip3 install -r /vagrant/mc-cli/requirements.txt
+python3 -m  pip install -r /vagrant/mc-cli/requirements.txt
 if [ ! -f "/bin/mc-cli" ]; then
     ln -s /vagrant/mc-cli/mc-cli /bin/mc-cli 
 fi
@@ -113,6 +114,28 @@ if [ ! -d "/opt/apache-karaf-${APACHE_KARAF_VERSION}" ]; then
 
     cp /tmp/config.properties /opt/apache-karaf-"${APACHE_KARAF_VERSION}"/etc/
     rm /tmp/config.properties
+fi
+
+# INSTALLING MONGODB
+
+echo "Installing MongoDB"
+systemctl is-active --quiet mongod
+retVal=$?
+
+if [ $retVal -ne 0 ]; then
+    echo "MongoDB is not running..."
+    sudo mkdir /vagrant/.db-data
+    sudo chown -R mongodb:mongodb /vagrant/.db-data
+    cp /tmp/mongod.conf /etc/mongod.conf
+    rm /tmp/mongod.cong
+    cd /vagrant
+    curl -fsSL https://www.mongodb.org/static/pgp/server-"${MONGO_DB_VERSION}".asc | sudo apt-key add -
+    echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/${MONGO_DB_VERSION} multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-"${MONGO_DB_VERSION}".list
+    sudo apt update
+    echo "Installing MongoDB"
+    sudo apt install --yes mongodb-org
+    sudo systemctl start mongod.service
+    sudo systemctl enable mongod
 fi
 
 # ENVIRONMENT VARIABLES

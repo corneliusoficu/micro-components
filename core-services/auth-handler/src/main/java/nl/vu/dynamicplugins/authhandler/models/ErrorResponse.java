@@ -1,15 +1,10 @@
 package nl.vu.dynamicplugins.authhandler.models;
 
-public class ValidationResult {
-    private boolean isError;
+public class ErrorResponse {
     private String message;
 
-    public boolean isError() {
-        return isError;
-    }
-
-    public void setError(boolean error) {
-        isError = error;
+    public ErrorResponse(String message) {
+        this.message = message;
     }
 
     public String getMessage() {

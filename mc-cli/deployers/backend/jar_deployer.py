@@ -65,5 +65,7 @@ class JarDeployer(Deployer):
         if karaf.bundle_already_runs(bundle_to_start):
             print(f"Bundle {bundle_to_start} is already running. Restarting...")
             karaf.uninstall_bundle_by_name(bundle_to_start)
+        else:
+            print(f"Bundle {bundle_to_start} is not running...")
 
         self._start_bundle(bundle_to_start, jar_location_for_deploy)

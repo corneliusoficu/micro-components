@@ -1,17 +1,17 @@
 package nl.vu.dynamicplugins.authhandler.models;
 
 public class User {
-    Long id;
+    String id;
     String firstName;
     String lastName;
     String email;
     String token;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

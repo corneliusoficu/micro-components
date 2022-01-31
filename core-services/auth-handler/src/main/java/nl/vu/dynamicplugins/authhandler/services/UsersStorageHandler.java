@@ -3,11 +3,16 @@ package nl.vu.dynamicplugins.authhandler.services;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import nl.vu.dynamicplugins.authhandler.MongoDBHandler;
+import nl.vu.dynamicplugins.authhandler.PasswordAuthentication;
 import nl.vu.dynamicplugins.authhandler.models.LoginRequest;
+import nl.vu.dynamicplugins.authhandler.models.RegisterRequest;
 import nl.vu.dynamicplugins.authhandler.models.User;
+import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -18,8 +23,29 @@ public class UsersStorageHandler {
     private static final String DEFAULT_ISSUER = "corneliu.soficu";
     private static final Long DEFAULT_TTL_HOURS = 24L;
 
-    User retrieveUserFromStorage(LoginRequest loginRequest) {
+    private final MongoDBHandler mongoDBHandler;
+    private final PasswordAuthentication passwordAuthentication;
+
+    public UsersStorageHandler() {
+        this.mongoDBHandler = MongoDBHandler.getConnection();
+        this.passwordAuthentication = new PasswordAuthentication();
+    }
+
+    User retrieveAuthenticatedUserFromStorage(LoginRequest loginRequest) throws NoSuchAlgorithmException {
         String email = loginRequest.getEmail();
+        LOGGER.info("Retrieving user: {}", email);
+        Document userDocument = mongoDBHandler.getUser(email);
+
+        if(userDocument == null) {
+            return null;
+        }
+
+        boolean isAuthenticated = passwordAuthentication
+                .authenticate(loginRequest.getPassword().toCharArray(), userDocument.getString("hashed_password"));
+
+        if(!isAuthenticated) {
+            return null;
+        }
 
         String token = this.createJWT(1L, DEFAULT_ISSUER, email, DEFAULT_TTL_HOURS);
 
@@ -27,14 +53,36 @@ public class UsersStorageHandler {
             return null;
         }
 
-        User mockUser = new User();
-        mockUser.setEmail("corneliu.soficu@gmail.com");
-        mockUser.setId(1L);
-        mockUser.setFirstName("Corneliu");
-        mockUser.setLastName("Soficu");
-        mockUser.setToken(token);
+        User user = new User();
+        user.setId(userDocument.getObjectId("_id").toHexString());
+        user.setEmail(userDocument.getString("email"));
+        user.setFirstName(userDocument.getString("first_name"));
+        user.setLastName(userDocument.getString("last_name"));
+        user.setToken(token);
+        return user;
+    }
 
-        return mockUser;
+    public User createUser(RegisterRequest registerRequest) {
+        Document userDocument = mongoDBHandler.getUser(registerRequest.getEmail());
+        if(userDocument != null) {
+            return null;
+        }
+
+        String hashedPasswordStr = passwordAuthentication.hash(registerRequest.getPassword().toCharArray());
+
+        mongoDBHandler.createUser(
+                registerRequest.getEmail(),
+                registerRequest.getFirstName(),
+                registerRequest.getLastName(),
+                hashedPasswordStr);
+
+        userDocument = mongoDBHandler.getUser(registerRequest.getEmail());
+        User user = new User();
+        user.setId(userDocument.getObjectId("_id").toHexString());
+        user.setEmail(userDocument.getString("email"));
+        user.setFirstName(userDocument.getString("first_name"));
+        user.setLastName(userDocument.getString("last_name"));
+        return user;
     }
 
     private String createJWT(Long id, String issuer, String subject, Long ttlHours) {
