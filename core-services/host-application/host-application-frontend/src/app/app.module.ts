@@ -21,6 +21,10 @@ import { LoginComponent } from './login/login.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatMenuModule } from '@angular/material/menu';
+
+
 
 
 @NgModule({
@@ -53,7 +57,9 @@ import { MatIconModule } from '@angular/material/icon';
     ReactiveFormsModule,
     MatButtonModule,
     MatProgressBarModule,
-    MatIconModule
+    MatIconModule,
+    MatExpansionModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]
